@@ -17,4 +17,6 @@ public class SignupRequest {
     private String password;
     @NotBlank
     private String userRole;
+    @NotBlank @Email
+    private String nickname; // ✅ 레벨1 2번 닉네임 추가
 }

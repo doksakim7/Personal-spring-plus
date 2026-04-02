@@ -38,11 +38,12 @@ public class AuthService {
         User newUser = new User(
                 signupRequest.getEmail(),
                 encodedPassword,
-                userRole
+                userRole,
+                signupRequest.getNickname() // ✅ 레벨1 2번 닉네임 추가
         );
         User savedUser = userRepository.save(newUser);
 
-        String bearerToken = jwtUtil.createToken(savedUser.getId(), savedUser.getEmail(), userRole);
+        String bearerToken = jwtUtil.createToken(savedUser.getId(), savedUser.getEmail(), userRole, savedUser.getNickname()); // ✅ 레벨1 2번 닉네임 추가
 
         return new SignupResponse(bearerToken);
     }
@@ -56,7 +57,7 @@ public class AuthService {
             throw new AuthException("잘못된 비밀번호입니다.");
         }
 
-        String bearerToken = jwtUtil.createToken(user.getId(), user.getEmail(), user.getUserRole());
+        String bearerToken = jwtUtil.createToken(user.getId(), user.getEmail(), user.getUserRole(), user.getNickname()); // ✅ 레벨1 2번 닉네임 추가
 
         return new SigninResponse(bearerToken);
     }
