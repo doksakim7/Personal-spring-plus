@@ -10,7 +10,8 @@ import org.springframework.data.repository.query.Param;
 import java.time.LocalDateTime;
 import java.util.Optional;
 
-public interface TodoRepository extends JpaRepository<Todo, Long> {
+// ✅ 레벨2 8번 TodoCustomRepository를 상속 받고 기존 findByIdWithUser 쿼리 메서드 삭제
+public interface TodoRepository extends JpaRepository<Todo, Long>, TodoCustomRepository {
 
     // ✅ 레벨1 3번 weather와 modifiedAt 기준으로 검색 가능하게 쿼리 메서드 생성 & 기존 쿼리 메서드 삭제
     @Query("SELECT t FROM Todo t " +
@@ -25,9 +26,4 @@ public interface TodoRepository extends JpaRepository<Todo, Long> {
             @Param("endDate") LocalDateTime endDate,
             Pageable pageable
             );
-
-    @Query("SELECT t FROM Todo t " +
-            "LEFT JOIN t.user " +
-            "WHERE t.id = :todoId")
-    Optional<Todo> findByIdWithUser(@Param("todoId") Long todoId);
 }
