@@ -6,8 +6,10 @@ import org.example.expert.domain.common.dto.AuthUser;
 import org.example.expert.domain.todo.dto.request.TodoSaveRequest;
 import org.example.expert.domain.todo.dto.response.TodoResponse;
 import org.example.expert.domain.todo.dto.response.TodoSaveResponse;
+import org.example.expert.domain.todo.dto.response.TodoSearchResponse;
 import org.example.expert.domain.todo.service.TodoService;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
@@ -40,8 +42,23 @@ public class TodoController {
         return ResponseEntity.ok(todoService.getTodos(page, size, weather, startDate, endDate));
     }
 
+
     @GetMapping("/todos/{todoId}")
     public ResponseEntity<TodoResponse> getTodo(@PathVariable long todoId) {
         return ResponseEntity.ok(todoService.getTodo(todoId));
     }
+
+
+    // ✅ 레벨3 10번 searchTodos 컨트롤러 생성
+    @GetMapping("/todos/search")
+    public ResponseEntity<Page<TodoSearchResponse>> searchTodos(
+            @RequestParam(required = false) String title,
+            @RequestParam(required = false) String startDate,
+            @RequestParam(required = false) String endDate,
+            @RequestParam(required = false) String nickname,
+            Pageable pageable
+    ) {
+        return ResponseEntity.ok(todoService.searchTodos(title, startDate, endDate, nickname, pageable));
+    }
+
 }
